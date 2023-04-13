@@ -4,7 +4,7 @@ import { Container } from './styles'
 export function New() {
   return (
     <Container>
-      Head
+      <Header/>
     </Container>
   )
 }
