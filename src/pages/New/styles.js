@@ -9,6 +9,20 @@ export const Container = styled.div`
   grid-template-areas:
     'header'
     'content';
+
+    > main {
+      grid-area: content;
+      overflow-y: auto;
+    }
+
+  .tags {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+  } 
 `
 
 export const Form = styled.form`
