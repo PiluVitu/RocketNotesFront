@@ -28,7 +28,7 @@ export function Home() {
         </li>
       </Menu>
       <Search>
-        <Input placeholder="Pesquisar por título" />
+        <Input placeholder="Pesquisar por título" icon={FiSearch}/>
       </Search>
       <Content>
         <Section title="Minhas Notas ">
@@ -79,7 +79,7 @@ export function Home() {
           />
         </Section>
       </Content>
-      <NewNote>
+      <NewNote to="/new">
         <FiPlus />
         Criar nota
       </NewNote>

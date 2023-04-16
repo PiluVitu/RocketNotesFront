@@ -4,7 +4,7 @@ import { Container, Profile, Logout } from './styles'
 export function Header() {
   return (
     <Container>
-      <Profile>
+      <Profile to="/profile">
         <img src="https://github.com/piluvitu.png" alt="GitHub Profile Photo" />
         <div>
           <span>Bem Vindo,</span>
