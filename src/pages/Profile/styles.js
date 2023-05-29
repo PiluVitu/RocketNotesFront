@@ -39,13 +39,14 @@ export const Avatar = styled.div`
     width: 18.6rem;
     height: 18.6rem;
     border-radius: 50%;
+    object-fit: cover;
   }
 
   > label {
     width: 4.8rem;
     height: 4.8rem;
 
-    borer-radius: 50%;
+    border-radius: 50%;
 
     display: flex;
     align-items: center;
