@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { api } from '../services'
 
 export const AuthContext = createContext({})
@@ -79,8 +79,7 @@ function AuthProvider({ children }) {
         signOut,
         updateProfile,
         user: data.user
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   )

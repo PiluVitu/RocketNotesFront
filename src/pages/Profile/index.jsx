@@ -1,12 +1,12 @@
 import { useState } from 'react'
+import { FiArrowLeft, FiCamera, FiLock, FiMail, FiUser } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
+import avatarPlaceholder from '../../assets/avatar_placeholder.svg'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
 import { useAuth } from '../../hooks/auth'
 import { api } from '../../services'
-import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
-import { Container, Form, Avatar } from './styles'
-import avatarPlaceholder from '../../assets/avatar_placeholder.svg'
-import { Input } from '../../components/Input'
-import { Button } from '../../components/Button'
+import { Avatar, Container, Form } from './styles'
 
 export function Profile() {
   const { user, updateProfile } = useAuth()
@@ -20,14 +20,16 @@ export function Profile() {
   const [avatarFile, setAvatarFile] = useState(null)
 
   async function handleUpdate() {
-    const user = {
+    const updated = {
       name,
       email,
       password: newPassword,
       old_password: oldPassword
     }
 
-    await updateProfile({ user, avatarFile })
+    const userUpdated = Object.assign(user, updated)
+
+    await updateProfile({ user: userUpdated, avatarFile })
   }
 
   function handleChangeAvatar(event) {
@@ -42,17 +44,24 @@ export function Profile() {
   return (
     <Container>
       <header>
-        <Link to="/">
+        <Link to={-1}>
           <FiArrowLeft />
         </Link>
       </header>
 
       <Form>
         <Avatar>
-          <img src={avatar} alt="Foto de perfil do usuário" />
+          <img
+            src={avatar}
+            alt="Foto de perfil do usuário"
+          />
           <label htmlFor="avatar">
             <FiCamera />
-            <input id="avatar" type="file" onChange={handleChangeAvatar} />
+            <input
+              id="avatar"
+              type="file"
+              onChange={handleChangeAvatar}
+            />
           </label>
         </Avatar>
         <Input
@@ -82,7 +91,10 @@ export function Profile() {
           onChange={e => setNewPassword(e.target.value)}
         />
 
-        <Button title="Salvar" onClick={handleUpdate} />
+        <Button
+          title="Salvar"
+          onClick={handleUpdate}
+        />
       </Form>
     </Container>
   )

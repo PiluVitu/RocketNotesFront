@@ -1,53 +1,76 @@
-import { Container, Links, Content } from './styles'
-import { Header } from '../../components/Header'
-import { TextButton } from '../../components/TextButton'
-import { Section } from '../../components/Section'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
+import { Header } from '../../components/Header'
+import { Section } from '../../components/Section'
 import { Tags } from '../../components/Tags'
+import { TextButton } from '../../components/TextButton'
+import { api } from '../../services'
+import { Container, Content, Links } from './styles'
 
 export function Details() {
+  const params = useParams()
+  const navigate = useNavigate()
+
+  const [data, setData] = useState(null)
+
+  function handleBack() {
+    navigate(-1)
+  }
+
+  async function handleDelete() {
+    const confirm = window.confirm('Você deseja excluir essa nota ?')
+
+    if (confirm) {
+      await api.delete(`/notes/${params.id}`)
+      alert('Nota deletada com sucesso')
+      navigate('/')
+    }
+  }
+
+  useEffect(() => {
+    async function fetchNote() {
+      const response = await api.get(`/notes/${params.id}`)
+      setData(response.data)
+    }
+    fetchNote()
+  }, [])
+
   return (
     <Container>
       <Header />
-      <main>
-        <Content>
-          <TextButton title="Excluir Nota" />
+      {data && (
+        <main>
+          <Content>
+            <TextButton title="Excluir Nota" onClick={handleDelete} />
 
-          <h1>ReactZin Brabissimo</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint nisi
-            consequatur quasi possimus doloremque magni, voluptatum corrupti
-            ipsum nesciunt et unde quas, harum cupiditate assumenda cumque
-            sapiente, sed quos explicabo! Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Voluptatibus saepe aspernatur non enim et, culpa
-            magnam? Nihil ab error, obcaecati laborum magni nam architecto unde
-            distinctio doloremque inventore dolores rerum! Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Quaerat inventore pariatur itaque
-            a? Officiis ad ducimus repudiandae aliquam, eligendi cumque. Vel non
-            harum recusandae exercitationem deleniti distinctio delectus ab
-            architecto.
-          </p>
-          <Section title="Links Úteis">
-            <Links>
-              <li>Minha</li>
-              <li>Cabeça</li>
-              <li>Tá</li>
-              <li>Pixcanu</li>
-              <li>
-                <a href="https://piluvitu.dev " target="blank_">
-                  Site Do Brabo
-                </a>
-              </li>
-            </Links>
-          </Section>
-          <Section title="Marcadores">
-            <Tags title="Piramide" />
-            <Tags title="Bah" />
-            <Tags title="Cumida" />
-          </Section>
-          <Button title="Voltar" />
-        </Content>
-      </main>
+            <h1>{data.title}</h1>
+            <p>{data.description}</p>
+
+            {data.links && (
+              <Section title="Links Úteis">
+                <Links>
+                  {data.links.map(link => (
+                    <li key={String(link.id)}>
+                      <a href={link.url} target="blank_" rel="noreferrer">
+                        {link.url}
+                      </a>
+                    </li>
+                  ))}
+                </Links>
+              </Section>
+            )}
+            {data.tags && (
+              <Section title="Marcadores">
+                {data.tags.map(tag => (
+                  <Tags key={String(tag.id)} title={tag.name} />
+                ))}
+              </Section>
+            )}
+            <Button title="Voltar" onClick={handleBack} />
+          </Content>
+        </main>
+      )}
     </Container>
   )
 }
